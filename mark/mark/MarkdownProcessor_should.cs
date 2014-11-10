@@ -11,7 +11,7 @@ namespace mark
     [TestFixture]
     public class MarkdownProcessor_should
     {
-        private readonly IProcessor processor = new MarkdownProcessor();
+        private IProcessor processor;
         
         [Test]
         public void convert_empty_text()
@@ -22,8 +22,8 @@ namespace mark
         [Test]
         public void convert_the_paragraph()
         {
-            var text = "\n    \nTesting is good!";
-            var expectedResult = "<p>Testing is good!</p>";
+            var text = "\n    \nTesting is good!\n\n\n";
+            var expectedResult = "<p>Testing is good!</p>\n";
             Test(text,expectedResult);
         }
 
@@ -35,9 +35,18 @@ namespace mark
             Test(text,expectedResult);
         }
 
+        [Test]
+        public void convert_text_surrounded_with_underscores()
+        {
+            var text = "_I can't stop_  \n \r\n _haha_ blabla_123_bla";
+            var expectedResult = "<p><em>I can't stop</em>  </p><p> <em>haha</em> blabla_123_bla</p>";
+            Test(text, expectedResult);
+        }
+
         private void Test(string text, string result)
         {
-            var actualResult = processor.ConvertFromMarkdownToHtml(text);
+            processor = new MarkdownProcessor(text);
+            var actualResult = processor.ConvertFromMarkdownToHtml();
             Assert.AreEqual(actualResult,result);
         }
     }
