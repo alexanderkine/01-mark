@@ -22,8 +22,8 @@ namespace mark
         [Test]
         public void convert_the_paragraph()
         {
-            var text = "\n    \nTesting is good!\n\n\n";
-            var expectedResult = "<p>Testing is good!</p>\n";
+            var text = "\n    \nTesting is good!\n\n";
+            var expectedResult = "<p>Testing is good!</p>";
             Test(text,expectedResult);
         }
 
