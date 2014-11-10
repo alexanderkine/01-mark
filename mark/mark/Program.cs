@@ -11,6 +11,9 @@ namespace mark
     {
         static void Main(string[] args)
         {
+            var text = "\n    \nTesting is good!\n\n\n";
+            var processor = new MarkdownProcessor(text);
+            var actualResult = processor.ConvertFromMarkdownToHtml();
         }
     }
 }

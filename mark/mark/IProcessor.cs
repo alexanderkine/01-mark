@@ -8,6 +8,6 @@ namespace mark
 {
     public interface IProcessor
     {
-        string ConvertFromMarkdownToHtml(string markdownText);
+        string ConvertFromMarkdownToHtml();
     }
 }
