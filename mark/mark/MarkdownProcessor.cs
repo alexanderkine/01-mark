@@ -20,7 +20,7 @@ namespace mark
         public string ConvertFromMarkdownToHtml()
         {
             if (string.IsNullOrEmpty(MarkdownText)) return string.Empty;
-            var paragraphs = Regex.Split(MarkdownText, @"\r?\n\s*\r?")
+            var paragraphs = Regex.Split(MarkdownText, @"\r?\n\s*\n\r?")
                 .Where(s => !string.IsNullOrEmpty(s))
                 .Select(s => string.Format("<p>{0}</p>", s));
             var text = string.Join(string.Empty, paragraphs);
