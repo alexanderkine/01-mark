@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace mark
 {
@@ -15,7 +16,7 @@ namespace mark
 
         public MarkdownProcessor(string markdownText)
         {
-            this.MarkdownText = markdownText;
+            this.MarkdownText = markdownText;          
         }
         public string ConvertFromMarkdownToHtml()
         {
@@ -25,7 +26,7 @@ namespace mark
                 .Select(s => string.Format("<p>{0}</p>", s));
             var text = string.Join(string.Empty, paragraphs);
             return ConvertTextWithUnderscores(text);   
-        }
+        }       
 
         private string ConvertTextWithUnderscores(string text)
         {
@@ -60,16 +61,19 @@ namespace mark
                 match = match.NextMatch();
             }
             builder.Append(text.Substring(lastMatchIndex, text.Length - lastMatchIndex));
-            for (int i=0;i<builder.Length-1;i++)
+            for (var i=0;i<builder.Length-1;i++)
                 if (builder[i] == '\\' && builder[i + 1] != '\\')
                     builder.Remove(i, 1);
             return builder.ToString();
         }
 
         private readonly static Regex LetterRegex = new Regex(@"([^\W_]|\\)");
-        private static readonly Regex StrongLocation = new Regex(@"(?<![\\_\w])__(?![\W_])|(?<=[^\W_])__(?![\\_\w])");
-        private static readonly Regex EmLocation = new Regex(@"((?<![\w_\\])_(?![\W_\\])|(?<=[^\W_])_(?![\w_]))");
-
+        private static readonly Regex StrongLocation = new Regex(@"(?<![\\_\w])__(?![\W_\\])|(?<=[^\W_])__(?![_\w])");
+        private static readonly Regex EmLocation = new Regex(@"(?<![\w_\\])_(?![\W_\\])|(?<=[^\W_])_(?![\w_])");
+        private static readonly Regex EmLocationBegin = new Regex(@"(?<![\w_\\])_(?![\W_\\])");
+        private static readonly Regex EmLocationEnd = new Regex(@"(?<=[^\W_])_(?![_\w])");
+        private static readonly Regex StrongLocationBegin = new Regex(@"(?<![\w_\\])__(?![\W_\\])");
+        private static readonly Regex StrongLocationEnd = new Regex(@"(?<=[^\W_])__(?![_\w])");
         private static bool IsLetter(char sign)
         {
             var signString = sign.ToString();
