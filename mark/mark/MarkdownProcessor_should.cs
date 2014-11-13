@@ -43,6 +43,26 @@ namespace mark
             Test(text, expectedResult);
         }
 
+        [Test]
+        public void convert_text_surrounded_with_double_underscores()
+        {
+            var text = "__I can't stop__  \n \r\n _haha_ blabla_123_bla";
+            var expectedResult = "<p><strong>I can't stop</strong>  </p><p> <em>haha</em> blabla_123_bla</p>";
+            Test(text, expectedResult);
+        }
+
+        [Test]
+
+        public void convert_different_text_surrounded_with_double_underscores()
+        {
+            var text1 = "_ha bla __I can't stop__  bingo_ \n \r\n _haha_ blabla_123_bla";
+            var expectedResult1 = "<p><em>ha bla <strong>I can't stop</strong>  bingo</em> </p><p> <em>haha</em> blabla_123_bla</p>";
+            var text2 = "\\_ha bla __I can't stop__  bingo\\_ \n \r\n _haha_ blabla_123_bla";
+            var expectedResult2 = "<p>_ha bla <strong>I can't stop</strong>  bingo_ </p><p> <em>haha</em> blabla_123_bla</p>";
+            Test(text1, expectedResult1);
+            Test(text2, expectedResult2);
+        }
+
         private void Test(string text, string result)
         {
             processor = new MarkdownProcessor(text);
